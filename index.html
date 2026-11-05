@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trener gitarowy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fff;--card:#fff;--seg:#f4eeee;--ink:#1b1011;--mut:#6b5a5c;--acc:#d4182b;--onacc:#fff;--acc2:#8f1222;--ok:#16794a;--bad:#a31621;--line:#e6dcdc;--wood:#efdcc9;--fretc:#9a8f90;--strc:#6b5a5c;--disp:"Bricolage Grotesque","Atkinson Hyperlegible",system-ui,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#120c0d;--seg:#211718;--ink:#f8eeee;--mut:#b5a3a5;--acc:#ff4d5e;--onacc:#0a0000;--acc2:#ff9aa4;--ok:#4ade80;--bad:#ff9a8f;--line:#2e2123;--wood:#3a2420;--fretc:#8a7a7c;--strc:#d8c9cb;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--card:#120c0d;--seg:#211718;--ink:#f8eeee;--mut:#b5a3a5;--acc:#ff4d5e;--onacc:#0a0000;--acc2:#ff9aa4;--ok:#4ade80;--bad:#ff9a8f;--line:#2e2123;--wood:#3a2420;--fretc:#8a7a7c;--strc:#d8c9cb;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0 auto;max-width:960px;padding:20px 16px 48px;background:var(--bg);color:var(--ink);font:16px/1.55 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+h1,h2,h3,.q,.tn,.bpm b,.grade b,.chip,.cc,#top-tabs button{font-family:var(--disp)}
+h1{font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.1}
+h2{font-size:22px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:700;margin:18px 0 4px}
+a{color:var(--acc);text-underline-offset:3px}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.sw{display:inline-flex;align-items:center;gap:10px;cursor:pointer;color:var(--mut);font-size:14px}
+.sw input{position:absolute;opacity:0;width:1px;height:1px}
+.sw i{width:40px;height:24px;border-radius:12px;background:var(--seg);border:1px solid var(--line);position:relative;transition:background .15s}
+.sw i:after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--mut);transition:transform .15s,background .15s}
+.sw input:checked+i{background:var(--acc)}.sw input:checked+i:after{transform:translateX(16px);background:var(--onacc)}
+.sw input:focus-visible+i{outline:3px solid var(--acc);outline-offset:2px}
+#top-tabs{display:flex;gap:6px 24px;border-bottom:2px solid var(--line);margin-bottom:18px;flex-wrap:wrap}
+#top-tabs button{font-size:18px;font-weight:700;color:var(--mut);background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:10px 2px;cursor:pointer}
+#top-tabs button.on{color:var(--ink);border-bottom-color:var(--acc)}
+#ex-tabs{display:inline-flex;gap:2px;padding:4px;background:var(--seg);border-radius:12px;margin-bottom:14px}
+#ex-tabs button{font:inherit;font-weight:700;color:var(--mut);background:none;border:0;border-radius:9px;padding:8px 20px;cursor:pointer}
+#ex-tabs button.on{background:var(--card);color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center;margin:10px 0}
+.mut{color:var(--mut);font-size:14px}
+label{color:var(--mut);font-size:14px}
+label select{margin-left:6px}
+.btn,select,input[type=number]{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 16px;cursor:pointer}
+.btn:hover{background:var(--seg)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--onacc);font-weight:700}.btn.pri:hover{filter:brightness(1.08)}
+.btn.big{font-size:18px;padding:14px 28px;font-weight:700}.push{margin-left:auto}
+.btn:disabled{opacity:.6;cursor:default}
+input[type=number]{width:92px;cursor:text}
+input[type=range]{flex:1;min-width:120px;accent-color:var(--acc)}input[type=checkbox]{accent-color:var(--acc);width:18px;height:18px;vertical-align:-4px;margin-right:6px}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.ibtn.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+.det{display:flex;align-items:center;gap:14px;margin:10px 0}
+.lvl{width:70px;height:8px;background:var(--seg);border-radius:4px;overflow:hidden}.lvl.wide{width:100%}.lvl i{display:block;height:100%;width:0;background:var(--ok)}
+.meter{position:relative;flex:1;height:8px;background:var(--seg);border-radius:4px}
+.meter:after{content:"";position:absolute;left:50%;top:-4px;width:2px;height:16px;background:var(--mut)}
+.meter i{position:absolute;top:-5px;left:50%;width:14px;height:18px;margin-left:-7px;border-radius:5px;background:var(--acc);transition:left .08s}
+.meter.big{height:12px;margin:26px 0}.meter.big:after{height:24px;top:-6px}.meter.big i{height:28px;top:-8px;width:8px;margin-left:-4px}
+.tun{text-align:center}.tun .row{justify-content:center}
+.tn{font-size:80px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.tc{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;min-height:1.3em}.tc.ok{color:var(--ok)}
+.q{font-size:22px;font-weight:600;line-height:1.35;margin:6px 0 10px}.q small{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:15px;font-weight:400;color:var(--mut)}
+.msg{min-height:1.6em;margin:8px 0;font-weight:700}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.fbw,.tw{overflow-x:auto}.fb{min-width:640px;width:100%;height:auto;touch-action:manipulation}.hit{fill:transparent;cursor:pointer}.hit:hover{fill:color-mix(in srgb,var(--acc) 14%,transparent)}
+.wood{fill:var(--wood)}.fret{stroke:var(--fretc);stroke-width:2.5}.nut{stroke:var(--ink);stroke-width:6}
+.str{stroke:var(--strc)}.str.hs{stroke:var(--acc)}.inl{fill:var(--acc2);opacity:.6}
+.mk{fill:var(--acc)}.mk.ok{fill:var(--ok)}.mt{fill:var(--onacc);font:700 11px system-ui;text-anchor:middle}
+.fn{fill:var(--mut);font:12px system-ui;text-anchor:middle}.sn{fill:var(--mut);font:700 12px system-ui;text-anchor:middle}.sn.hs{fill:var(--acc)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.chip{min-width:64px;text-align:center;padding:12px 14px;border:2px dashed var(--line);border-radius:12px;font-size:22px;font-weight:700;color:var(--mut)}
+.chip.ok{border:2px solid var(--ok);color:var(--ok)}
+table{border-collapse:collapse;width:100%;min-width:420px;font-size:15px}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:700;font-size:14px}
+.les{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.tick{color:var(--ok);font-size:14px;font-weight:700}
+.bar{height:6px;background:var(--seg);border-radius:3px;margin:8px 0 12px}.bar i{display:block;height:100%;background:var(--acc);border-radius:3px}
+.opts{display:flex;flex-direction:column;gap:8px;margin:12px 0}.opts .btn{text-align:left;padding:14px 16px}
+.btn.good{border-color:var(--ok);color:var(--ok);font-weight:700;background:color-mix(in srgb,var(--ok) 12%,var(--card))}
+.btn.wrong{border-color:var(--bad);color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--card))}.btn.good:disabled,.btn.wrong:disabled{opacity:1}
+.grade{display:flex;align-items:baseline;gap:14px;margin:8px 0}.grade b{font-size:72px;line-height:1;color:var(--acc)}
+#lz ul{margin:4px 0;padding-left:22px}
+.bpmrow{display:flex;align-items:center;justify-content:center;gap:20px;margin:10px 0}
+.bpm{text-align:center}.bpm b{font-size:84px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.beats{display:flex;gap:14px;justify-content:center;margin:18px 0}.beats i{width:18px;height:18px;border-radius:50%;background:var(--seg)}.beats i.on{background:var(--acc2)}
+.chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px}
+.cc{font-size:24px;font-weight:700;padding:22px 4px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.cc:hover{border-color:var(--mut)}.cc.on{border-color:var(--acc);background:var(--acc);color:var(--onacc)}
+@media (max-width:520px){.bpm b{font-size:64px}#top-tabs{gap:6px 16px}#top-tabs button{font-size:16px}.les{flex-direction:column;align-items:flex-start}.card{padding:16px}.tn{font-size:64px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header><h1>Trener gitarowy</h1>
+<div class="row" style="margin:0"><label class="sw"><input type="checkbox" id="pl"><i></i><span>Nazwy polskie (H, B)</span></label><button id="thm" class="ibtn" type="button" title="Tryb jasny/ciemny" aria-label="Tryb jasny/ciemny">☾</button></div></header>
+
+<nav class="tabs" id="top-tabs"><button class="on" data-m="ex">Ćwiczenia dźwiękowe</button><button data-m="jam">Metronom i progresje</button></nav>
+<div id="m-ex">
+<div class="row"><button id="tunbtn" class="ibtn" type="button" title="Tuner" aria-label="Tuner" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 14.5l3.5-5.5"/><circle cx="12" cy="14.5" r="1.3"/></svg></button></div>
+<section class="card tun" id="tun" hidden>
+ <div class="tn" id="tn">–</div>
+ <div class="meter big"><i id="tneedle"></i></div>
+ <div class="tc" id="tc"></div>
+ <div class="mut" id="tf"></div>
+ <div class="row"><span class="mut">A4 =</span><button class="btn" id="rm" type="button" aria-label="Obniż o 1 Hz">−</button><input id="ra" type="number" min="400" max="480" step="0.1" value="440" aria-label="Częstotliwość A4 w Hz"><span class="mut">Hz</span><button class="btn" id="rp" type="button" aria-label="Podnieś o 1 Hz">+</button><button class="btn" id="rz" type="button">440</button></div>
+</section>
+
+<section class="card">
+ <div class="row"><button id="micbtn" class="btn pri">Włącz mikrofon</button><span id="mst" class="mut">Pozwól na dostęp do mikrofonu, żeby strona słyszała gitarę.</span></div>
+ <div class="det"><label for="gn">Gain</label><input id="gn" type="range" min="0" max="400" step="5" value="100" aria-label="Gain mikrofonu"><span id="gv" class="mut">100%</span></div><div class="lvl wide" title="Poziom sygnału"><i id="lv"></i></div>
+
+</section>
+
+<nav class="tabs" id="ex-tabs"><button class="on" data-t="fb">Gryf</button><button data-t="th">Teoria</button><button data-t="ea">Słuch</button></nav>
+
+<section id="p-fb" class="card">
+ <h2>Nauka dźwięków na gryfie</h2>
+ <div class="row">
+  <label>Tryb <select id="fbm"><option value="str">Znajdź nutę na strunie</option><option value="pos">Zagraj zaznaczone miejsce</option></select></label>
+  <label>Struna <select id="fbs"><option value="all">wszystkie</option><option value="0">6 (E)</option><option value="1">5 (A)</option><option value="2">4 (D)</option><option value="3">3 (G)</option><option value="4">2 (B)</option><option value="5">1 (e)</option></select></label>
+  <label><input type="checkbox" id="fbsh" checked> dźwięki z krzyżykiem</label>
+ </div>
+ <p id="fbq" class="q"></p>
+ <div class="fbw" id="fbsvg"></div>
+ <p id="fbtap" class="mut">Dotknij progu na gryfie, żeby usłyszeć dźwięk.</p>
+ <p id="fbmsg" class="msg"></p>
+ <div class="row"><button class="btn" id="fbhear">Posłuchaj</button><button class="btn" id="fbshow">Pokaż odpowiedź</button><button class="btn" id="fbnext">Pomiń</button><span id="fbstat" class="mut"></span></div>
+</section>
+
+<section id="p-th" class="card" hidden><div id="lz"></div></section>
+</div>
+
+<div id="m-jam" hidden>
+<section class="card">
+ <h2>Metronom i progresje do improwizacji</h2>
+ <div class="bpmrow"><button class="btn" id="bm" type="button" aria-label="Wolniej">−</button><div class="bpm"><b id="bpmv">100</b><span class="mut"> BPM</span></div><button class="btn" id="bp" type="button" aria-label="Szybciej">+</button></div>
+ <input id="bpm" type="range" min="40" max="220" value="100" style="width:100%" aria-label="Tempo">
+ <div class="row"><button class="btn pri big" id="jgo" type="button">▶ Start</button><button class="btn big push" id="jtap" type="button">Tap tempo</button></div>
+ <div class="row"><label><input type="checkbox" id="jmet" checked>metronom</label><label><input type="checkbox" id="jbk" checked>akordy w tle</label></div>
+ <div class="row"><label>Głośność akordów <input id="jvol" type="range" min="0" max="100" value="60"></label></div>
+ <div class="row"><label>Progresja <select id="jpg"></select></label><label>Pierwszy akord <select id="jrt"></select></label><label>Metrum <select id="jm"><option>2/4</option><option>3/4</option><option selected>4/4</option><option>5/4</option><option>6/8</option></select></label></div>
+ <div class="beats" id="jb"><i></i><i></i><i></i><i></i></div>
+ <div class="chs" id="jc"></div>
+ <p class="mut" id="jh"></p>
+ <p class="mut">Kliknij akord, żeby zacząć od niego. Zmiana tempa działa od razu, także w trakcie grania.</p>
+</section>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const OPEN=[40,45,50,55,59,64],snm=i=>i===4?(pl?'H':'B'):['E','A','D','G','','e'][i];
+let pl=false,tab='fb',sub='int';
+const nm=pc=>(pl?['C','C#','D','D#','E','F','F#','G','G#','A','B','H']:['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'])[((pc%12)+12)%12];
+const S={fb:{ok:0,tot:0,st:0,best:0},th:{ok:0,tot:0,st:0,best:0}};
+const stat=k=>{const o=S[k];$('#'+(k==='fb'?'fbstat':'thstat')).textContent=`Trafione: ${o.ok}/${o.tot} · seria ${o.st} · rekord ${o.best}`};
+const msg=(id,t,c)=>{const e=$('#'+id+'msg');e.textContent=t;e.className='msg '+(c||'')};
+const win=(k)=>{const o=S[k];o.ok++;o.tot++;o.st++;o.best=Math.max(o.best,o.st)};
+const lose=(k)=>{S[k].tot++;S[k].st=0};
+
+/* ---------- audio ---------- */
+let ac,an,buf,cand=-1,stab=0,fired=-1,quiet=0,mute=0,ref=440,fh=[],gain;
+const ctx=()=>ac||(ac=new (window.AudioContext||window.webkitAudioContext)());
+async function startMic(){
+ try{
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw{name:'NoApi'};
+  if(document.permissionsPolicy&&!document.permissionsPolicy.allowsFeature('microphone'))throw{name:'Frame'};
+  let s;try{s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})}catch(e){if(e.name==='OverconstrainedError'||e.name==='TypeError')s=await navigator.mediaDevices.getUserMedia({audio:true});else throw e}
+  const c=ctx();if(c.state==='suspended')await c.resume();
+  an=c.createAnalyser();an.fftSize=$('#tun').hidden?4096:8192;gain=c.createGain();gain.gain.value=$('#gn').value/100;c.createMediaStreamSource(s).connect(gain);gain.connect(an);buf=new Float32Array(an.fftSize);
+  $('#micbtn').textContent='Mikrofon włączony';$('#micbtn').disabled=true;$('#mst').textContent='Zagraj pojedynczy dźwięk na gitarze.';
+  setInterval(tick,40);
+ }catch(e){const n=e&&e.name;console.error(e);$('#mst').textContent=n==='Frame'||(n==='NotAllowedError'&&window.self!==window.top)?'Mikrofon blokuje ramka, w której wyświetla się strona (to nie są ustawienia przeglądarki). Pobierz plik HTML i otwórz go w przeglądarce, wtedy mikrofon zadziała.':n==='NotAllowedError'?'Przeglądarka odmówiła dostępu. Kliknij kłódkę przy adresie, zezwól na mikrofon i odśwież stronę.':n==='NotFoundError'?'Nie znaleziono mikrofonu. Podłącz go i spróbuj ponownie.':n==='NotReadableError'?'Mikrofon jest zajęty przez inną aplikację lub kartę.':n==='NoApi'?'Ten kontekst strony nie udostępnia mikrofonu (wymagane HTTPS).':'Nie udało się włączyć mikrofonu ('+n+').'}
+}
+function pitch(){
+ if(buf.length!==an.fftSize)buf=new Float32Array(an.fftSize);
+ an.getFloatTimeDomainData(buf);
+ const n=buf.length,sr=ac.sampleRate;let e=0;for(let i=0;i<n;i++)e+=buf[i]*buf[i];
+ const rms=Math.sqrt(e/n);$('#lv').style.width=Math.min(100,rms*500)+'%';
+ if(rms<0.008)return null;
+ const lo=Math.floor(sr/1000),hi=Math.min(Math.floor(sr/70),n/2|0),m=n-hi;
+ const r=new Float32Array(hi+2);let c0=0;for(let i=0;i<m;i++)c0+=buf[i]*buf[i];
+ for(let l=lo;l<=hi;l++){let s=0;for(let i=0;i<m;i++)s+=buf[i]*buf[i+l];r[l]=s/c0}
+ let i=lo;while(i<hi&&r[i]>r[i+1])i++;
+ let best=-1,bv=0;
+ for(let l=i;l<hi;l++)if(r[l]>r[l-1]&&r[l]>=r[l+1]&&r[l]>bv){bv=r[l];best=l}
+ if(best<0||bv<0.5)return null;
+ for(let l=i;l<best;l++)if(r[l]>r[l-1]&&r[l]>=r[l+1]&&r[l]>=0.9*bv){best=l;break}
+ const a=r[best-1],b=r[best],c=r[best+1],d=a-2*b+c,sh=d?0.5*(a-c)/d:0;
+ return sr/(best+sh);
+}
+function tick(){
+ if(performance.now()<mute){cand=-1;stab=0;return}
+ const f=pitch(),T=!$('#tun').hidden;
+ if(f===null){if(++quiet>6){fired=-1;cand=-1;stab=0;fh=[];if(T)tunOff()}return}
+ quiet=0;const p=69+12*Math.log2(f/ref),m=Math.round(p);if(m<36||m>92)return;
+ 
+ if(T){fh.push(f);if(fh.length>5)fh.shift();tunShow()}
+ if(m===cand)stab++;else{cand=m;stab=1}
+ if(stab>=3&&m!==fired){fired=m;onPc(((m%12)+12)%12)}
+}
+const onPc=pc=>{if(mode!=='ex'||!$('#tun').hidden)return;tab==='fb'?fbIn(pc):thIn(pc)};
+function pluck(f,t){
+ const c=ctx(),sr=c.sampleRate,N=Math.max(2,Math.round(sr/f-.5)),len=Math.floor(sr*2),b=c.createBuffer(1,len,sr),d=b.getChannelData(0);
+ let p=0;for(let i=0;i<N;i++){p=.6*p+.4*(Math.random()*2-1);d[i]=p*2}
+ const k=f<200?.9985:.996;
+ for(let i=N;i<len;i++)d[i]=k*.5*(d[i-N]+d[i-N+1]);
+ const s=c.createBufferSource(),g=c.createGain(),lp=c.createBiquadFilter();
+ s.buffer=b;lp.type='lowpass';lp.frequency.value=3200;g.gain.value=.4;
+ s.connect(lp).connect(g).connect(c.destination);s.start(t);
+}
+function play(ms,gap=.55){
+ const c=ctx();let t=c.currentTime+.05;mute=performance.now()+ms.length*gap*1000+1800;
+ ms.forEach(m=>{pluck(ref*2**((m-69)/12),t);t+=gap});
+}
+
+/* ---------- gryf ---------- */
+const fb={s:0,f:0,pc:0,mode:'str',done:false};
+function drawFb(marks,hs){
+ const W=54,X0=56,y=s=>24+(5-s)*26;
+ let o=`<svg class="fb" viewBox="0 0 ${X0+13*W+10} 195" role="img" aria-label="Gryf gitary"><rect class="wood" x="${X0}" y="14" width="${13*W}" height="150" rx="4"/>`;
+ for(let f=0;f<=12;f++){const x=X0+f*W;o+=`<line class="${f?'fret':'nut'}" x1="${x}" y1="14" x2="${x}" y2="164"/>`;if(f)o+=`<text class="fn" x="${x-W/2}" y="184">${f}</text>`}
+ [3,5,7,9].forEach(f=>o+=`<circle class="inl" cx="${X0+(f-.5)*W}" cy="89" r="6"/>`);
+ o+=`<circle class="inl" cx="${X0+11.5*W}" cy="63" r="6"/><circle class="inl" cx="${X0+11.5*W}" cy="115" r="6"/>`;
+ for(let s=0;s<6;s++)o+=`<line class="str ${hs===s?'hs':''}" stroke-width="${(.8+(5-s)*.4).toFixed(1)}" x1="${X0}" y1="${y(s)}" x2="${X0+13*W}" y2="${y(s)}"/><text class="sn ${hs===s?'hs':''}" x="22" y="${y(s)+4}">${snm(s)}</text>`;
+ marks.forEach(m=>{const x=m.f?X0+(m.f-.5)*W:X0-18;o+=`<circle class="mk ${m.c||''}" cx="${x}" cy="${y(m.s)}" r="11"/><text class="mt" x="${x}" y="${y(m.s)+4}">${m.t}</text>`});
+ for(let s=0;s<6;s++)for(let f=0;f<=12;f++){const x=f?X0+(f-1)*W:X0-44;o+=`<rect class="hit" data-s="${s}" data-f="${f}" x="${x}" y="${y(s)-13}" width="${f?W:44}" height="26"/>`}
+ $('#fbsvg').innerHTML=o+'</svg>';
+}
+function fbNew(){
+ const sel=$('#fbs').value,sh=$('#fbsh').checked;let s,f,pc;
+ do{s=sel==='all'?Math.random()*6|0:+sel;f=Math.random()*13|0;pc=(OPEN[s]+f)%12}while(!sh&&[1,3,6,8,10].includes(pc));
+ Object.assign(fb,{s,f,pc,done:false,mode:$('#fbm').value});fired=cand;fbDraw();msg('fb','');stat('fb');
+}
+function fbDraw(){
+ if(fb.mode==='str'){$('#fbq').innerHTML=`Znajdź nutę <b>${nm(fb.pc)}</b> na strunie <b>${snm(fb.s)}</b> (struna ${6-fb.s})`;drawFb([],fb.s)}
+ else{$('#fbq').innerHTML='Zagraj zaznaczony dźwięk';drawFb([{s:fb.s,f:fb.f,t:'?'}],fb.s)}
+}
+function fbReveal(c){
+ const fr=(fb.pc-OPEN[fb.s]%12+12)%12,ms=[];
+ if(fb.mode==='pos')ms.push({s:fb.s,f:fb.f,t:nm(fb.pc),c});
+ else{ms.push({s:fb.s,f:fr,t:nm(fb.pc),c});if(fr===0)ms.push({s:fb.s,f:12,t:nm(fb.pc),c})}
+ drawFb(ms,fb.s);
+}
+function fbIn(pc){
+ if(fb.done)return;
+ if(pc===fb.pc){win('fb');fb.done=true;fbReveal('ok');msg('fb','Dobrze! '+nm(pc),'ok');setTimeout(fbNew,1500)}
+ else{lose('fb');msg('fb',`To było ${nm(pc)} — spróbuj jeszcze raz`,'bad')}
+ stat('fb');
+}
+$('#fbhear').onclick=()=>play([55+((fb.pc-7+12)%12)]);
+$('#fbshow').onclick=()=>{if(fb.done)return;lose('fb');fb.done=true;fbReveal('');msg('fb','Odpowiedź: '+nm(fb.pc));stat('fb');setTimeout(fbNew,2500)};
+$('#fbnext').onclick=fbNew;
+$('#fbsvg').onclick=e=>{const h=e.target.closest('[data-s]');if(!h)return;const s=+h.dataset.s,f=+h.dataset.f,m=OPEN[s]+f;play([m]);$('#fbtap').textContent='Zagrano: '+nm(m)+' ('+(f?'próg '+f:'pusta struna')+', struna '+(6-s)+')'};
+['fbm','fbs','fbsh'].forEach(i=>$('#'+i).onchange=fbNew);
+
+/* ---------- teoria: lekcje ---------- */
+const INT=[['sekunda mała',[0,1],'','2m'],['sekunda wielka',[0,2],'','2w'],['tercja mała',[0,3],'','3m'],['tercja wielka',[0,4],'','3w'],['kwarta czysta',[0,5],'','4cz'],['tryton',[0,6],'','4zw / 5zm'],['kwinta czysta',[0,7],'','5cz'],['seksta mała',[0,8],'','6m'],['seksta wielka',[0,9],'','6w'],['septyma mała',[0,10],'','7m'],['septyma wielka',[0,11],'','7w']];
+const C3=[['durowy',[0,4,7],'','1 3 5'],['molowy',[0,3,7],'m','1 b3 5']];
+const C4=[['durowy septymowy',[0,4,7,11],'maj7','1 3 5 7'],['molowy septymowy',[0,3,7,10],'m7','1 b3 5 b7']];
+const ex=(r,o)=>o.map(x=>nm(r+x)).join('–');
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const grade=p=>p>=95?6:p>=85?5:p>=70?4:p>=55?3:p>=40?2:1;
+const GN=['','niedostateczny','dopuszczający','dostateczny','dobry','bardzo dobry','celujący'];
+const LES0=[
+ {id:'i1',t:'Interwały: sekundy i tercje',kind:'int',items:INT.slice(0,4),
+  intro:()=>`<p><b>Półton</b> to najmniejsza odległość między dźwiękami. Na gitarze to jeden próg. <b>Ton</b> to dwa półtony, czyli dwa progi.</p><p><b>Interwał</b> to odległość między dwoma dźwiękami. Nazwa mówi, ile stopni skali obejmuje (sekunda to 2, tercja to 3), a przymiotnik, czy jest <i>mała</i>, czy <i>wielka</i>. Wielka jest o półton szersza.</p><p>Tercja decyduje o charakterze akordu: wielka brzmi jasno (dur), mała ciemniej (moll).</p>`,
+  qz:()=>[['Ile półtonów ma tercja wielka?',['3','4','5'],1,'Tercja wielka to 4 półtony (2 tony).'],['Ile progów na jednej strunie to jeden ton?',['1','2','3'],1,'Ton to 2 półtony, czyli 2 progi.'],['Która tercja nadaje brzmienie molowe?',['wielka','mała'],1,'Tercja mała (3 półtony) daje brzmienie molowe.']]},
+ {id:'i2',t:'Interwały: kwarty, kwinty, seksty, septymy',kind:'int',items:INT.slice(4),
+  intro:()=>`<p><b>Kwarta czysta</b> (5 półtonów) i <b>kwinta czysta</b> (7 półtonów) są „czyste”, nie mają wersji małej i wielkiej. Kwinta to podstawa power chordów.</p><p><b>Tryton</b> (6 półtonów) leży w połowie oktawy i brzmi napięciem.</p><p>Seksty (8 i 9 półtonów) oraz septymy (10 i 11) mają wersje małą i wielką. Septyma wielka jest tuż pod oktawą (12 półtonów).</p>`,
+  qz:()=>[['Ile półtonów ma kwinta czysta?',['6','7','8'],1,'Kwinta czysta to 7 półtonów.'],['Który interwał ma 6 półtonów?',['kwarta czysta','tryton','kwinta czysta'],1,'Tryton to połowa oktawy, 6 półtonów.'],['Septyma wielka jest od oktawy niższa o…',['półton','ton','tercję'],0,'Ma 11 półtonów, o jeden mniej niż oktawa (12).']]},
+ {id:'t3',t:'Trójdźwięki: dur i moll',kind:'chord',items:C3,
+  intro:()=>`<p><b>Trójdźwięk</b> to akord z trzech dźwięków ułożonych w tercje: prymy (podstawa), tercji i kwinty.</p><p><b>Dur</b>: tercja wielka i kwinta czysta (1 3 5), np. ${ex(0,[0,4,7])}. <b>Moll</b>: tercja mała i kwinta czysta (1 b3 5), np. ${ex(0,[0,3,7])}. Jedyna różnica to tercja, w molu jest o półton niżej.</p>`,
+  qz:()=>[['Który dźwięk odróżnia akord durowy od molowego?',['pryma','tercja','kwinta'],1,'Różni je tercja: wielka w durze, mała w molu.'],[`Z jakich dźwięków składa się ${nm(0)}-dur?`,[ex(0,[0,4,7]),ex(0,[0,3,7]),ex(0,[0,5,7])],0,`Dur to 1 3 5, czyli ${ex(0,[0,4,7])}.`],['Jak zamienić akord durowy na molowy?',['obniżyć kwintę o półton','obniżyć tercję o półton','podwyższyć prymę o półton'],1,'Tercja wielka (4 półtony) staje się małą (3 półtony).']]},
+ {id:'t4',t:'Czterodźwięki: maj7 i m7',kind:'chord',items:C4,
+  intro:()=>`<p>Czterodźwięk to trójdźwięk z dodaną <b>septymą</b>. Dwa podstawowe: <b>maj7</b> (dur i septyma wielka, 1 3 5 7, np. ${ex(0,[0,4,7,11])}) oraz <b>m7</b> (moll i septyma mała, 1 b3 5 b7, np. ${ex(0,[0,3,7,10])}).</p><p>maj7 brzmi miękko i marzycielsko, m7 spokojnie i lekko melancholijnie. Oba są wszędzie w jazzie, soulu i popie.</p>`,
+  qz:()=>[['Jaka septyma występuje w akordzie maj7?',['mała','wielka'],1,'maj7 ma septymę wielką (11 półtonów).'],[`Który akord to ${nm(0)}m7?`,[ex(0,[0,4,7,11]),ex(0,[0,3,7,10]),ex(0,[0,3,7])],1,`m7 to 1 b3 5 b7, czyli ${ex(0,[0,3,7,10])}.`],['Ile dźwięków ma czterodźwięk?',['3','4','5'],1,'Cztery: trójdźwięk plus septyma.']]}
+];
+const N0={id:'n0',t:'Nazwy dźwięków, półtony i tony',kind:'quiz',items:[],
+ intro:()=>`<p>W muzyce jest siedem podstawowych nazw dźwięków: C, D, E, F, G, A, ${nm(11)}. W oktawie mieści się dwanaście półtonów. Tylko między E i F oraz ${nm(11)} i C jest jeden półton, między pozostałymi sąsiednimi dźwiękami cały ton.</p><p><b>Krzyżyk (#)</b> podwyższa dźwięk o półton, a <b>bemol (b)</b> obniża o półton. Ten sam dźwięk może mieć dwie nazwy, np. C# i Db. Nazywamy to <i>enharmonią</i>.</p><p>Na gitarze jeden próg to jeden półton, a dwa progi to cały ton.</p>`,
+ qz:()=>[['Między którymi dźwiękami jest tylko półton?',['C i D','E i F','G i A'],1,`Półton jest między E i F oraz między ${nm(11)} i C.`],['Ile półtonów ma oktawa?',['7','10','12'],2,'Oktawa to 12 półtonów, czyli 12 progów na jednej strunie.'],['Jak nazywa się dźwięk o półton wyższy od A?',['G#','A#','Ab'],1,'Krzyżyk podwyższa dźwięk o półton, bemol go obniża.'],['Co oznacza enharmonia?',['dwa dźwięki o różnej wysokości','ten sam dźwięk zapisany pod dwiema nazwami','dźwięk o pół tonu niższy'],1,'Np. C# i Db to ten sam dźwięk.']]};
+const S1={id:'s1',t:'Skala durowa',kind:'scale',items:[['durowa',[0,2,4,5,7,9,11],'','T T P T T T P']],
+ intro:()=>`<p><b>Skala</b> to uporządkowany zestaw dźwięków. Skala durowa ma siedem stopni i powstaje według wzoru: ton, ton, półton, ton, ton, ton, półton (T T P T T T P).</p><p>Od ${nm(0)} dostajesz ${ex(0,[0,2,4,5,7,9,11])}. Ten sam wzór zaczęty od dowolnego dźwięku daje skalę durową tego dźwięku. Brzmi jasno i radośnie.</p>`,
+ qz:()=>[['Jaki jest wzór skali durowej?',['T T P T T T P','T P T T P T T','T T T P T T P'],0,'Ton, ton, półton, ton, ton, ton, półton.'],['Ile stopni ma skala durowa?',['5','7','12'],1,'Siedem stopni, potem zaczyna się kolejna oktawa.'],[`Jakie dźwięki tworzą skalę ${nm(0)}-dur?`,[ex(0,[0,2,4,5,7,9,11]),ex(0,[0,2,3,5,7,8,10]),ex(0,[0,1,3,5,6,8,10])],0,`Wzór T T P T T T P od ${nm(0)} daje ${ex(0,[0,2,4,5,7,9,11])}.`]]};
+const S2={id:'s2',t:'Skala molowa naturalna',kind:'scale',items:[['molowa naturalna',[0,2,3,5,7,8,10],'','T P T T P T T']],
+ intro:()=>`<p>Skala molowa naturalna ma wzór: ton, półton, ton, ton, półton, ton, ton (T P T T P T T). Od ${nm(9)} to ${ex(9,[0,2,3,5,7,8,10])}, czyli te same dźwięki co ${nm(0)}-dur, tylko zaczęte od szóstego stopnia.</p><p>Takie dwie tonacje nazywamy <b>równoległymi</b>: ${nm(0)}-dur i ${nm(9)}-moll. W porównaniu ze skalą durową od tego samego dźwięku mają obniżone: tercję, sekstę i septymę.</p>`,
+ qz:()=>[['Od którego stopnia skali durowej zaczyna się równoległa skala molowa?',['trzeciego','szóstego','siódmego'],1,'Skala molowa naturalna zaczyna się na szóstym stopniu skali durowej.'],[`Jaka tonacja moll jest równoległa do ${nm(0)}-dur?`,[nm(9)+'-moll',nm(4)+'-moll',nm(7)+'-moll'],0,`Ma te same dźwięki: ${nm(9)}-moll.`],['Które stopnie są niższe w molu naturalnym niż w durze od tego samego dźwięku?',['3, 6 i 7','2 i 5','tylko 4'],0,'Tercja, seksta i septyma są o półton niższe.']]};
+const D1={id:'d1',t:'Akordy w tonacji',kind:'quiz',items:[],
+ intro:()=>`<p>Budując trójdźwięk na każdym stopniu skali durowej, dostajesz akordy tonacji. Rodzaje zawsze układają się tak samo: <b>I dur, ii moll, iii moll, IV dur, V dur, vi moll, vii zmniejszony</b>.</p><p>W ${nm(0)}-dur: ${nm(0)}, ${nm(2)}m, ${nm(4)}m, ${nm(5)}, ${nm(7)}, ${nm(9)}m, ${nm(11)}dim. Stąd biorą się progresje takie jak I–V–vi–IV z zakładki Metronom i progresje.</p>`,
+ qz:()=>[['Jakim akordem jest stopień vi w tonacji durowej?',['durowym','molowym','zmniejszonym'],1,`vi to akord molowy, np. ${nm(9)}m w ${nm(0)}-dur.`],[`Jakie akordy to I, IV i V w ${nm(0)}-dur?`,[`${nm(0)}, ${nm(5)}, ${nm(7)}`,`${nm(0)}, ${nm(4)}, ${nm(9)}`,`${nm(0)}, ${nm(2)}, ${nm(7)}`],0,`I = ${nm(0)}, IV = ${nm(5)}, V = ${nm(7)}.`],['Który stopień daje akord zmniejszony?',['ii','V','vii'],2,'Na siódmym stopniu powstaje trójdźwięk zmniejszony.'],['Które akordy w tonacji durowej są durowe?',['I, IV, V','ii, iii, vi','tylko I'],0,'Durowe są I, IV i V.']]};
+const H1={id:'h1',t:'Harmonia funkcyjna: T, S, D',kind:'quiz',items:[],
+ intro:()=>`<p>Akordy pełnią w tonacji <b>funkcje</b>. <b>Tonika (T)</b> to dom i miejsce spoczynku (stopień I). <b>Subdominanta (S)</b> odchodzi od domu (stopień IV). <b>Dominanta (D)</b> tworzy napięcie, które chce wrócić do toniki (stopień V).</p><p>Najprostszy obieg to T–S–D–T, np. ${nm(0)}, ${nm(5)}, ${nm(7)}, ${nm(0)}. Akordy zastępcze pełnią tę samą funkcję: vi zastępuje I, a ii zastępuje IV.</p>`,
+ qz:()=>[['Który stopień jest dominantą?',['IV','V','vi'],1,'Dominanta to stopień V.'],['Jaką funkcję pełni akord IV?',['toniki','subdominanty','dominanty'],1,'IV to subdominanta.'],['Która funkcja tworzy napięcie rozwiązywane w tonice?',['subdominanta','dominanta','żadna'],1,'Dominanta chce wrócić do toniki.'],[`Który akord może zastąpić ${nm(0)} jako tonika w ${nm(0)}-dur?`,[nm(9)+'m',nm(2)+'m',nm(7)],0,`vi (${nm(9)}m) jest akordem zastępczym toniki.`]]};
+const E1={id:'e1',ear:1,pb:1,t:'Słuch: rozpoznawanie interwałów',kind:'int',eq:'Jaki interwał usłyszałeś?',items:[INT[1],INT[2],INT[3],INT[4],INT[6],INT[8]],
+ intro:()=>`<p>Interwały rozpoznajemy po <b>charakterze</b>, a nie przez liczenie półtonów. Tercja mała brzmi ciemno i smutno, a tercja wielka jasno i radośnie. Kwarta czysta jest otwarta i lekko zawieszona, a kwinta czysta pusta, mocna i stabilna, jak power chord. Seksta wielka brzmi ciepło, a sekunda wielka jak zwykły krok w górę po skali.</p><p>Wskazówka: po usłyszeniu zaśpiewaj oba dźwięki w głowie albo na głos. W zadaniach „zagraj to, co usłyszałeś” znasz pierwszy dźwięk, a drugi musisz znaleźć na gitarze ze słuchu. Interwał możesz odsłuchać ponownie.</p>`};
+const E2={id:'e2',ear:1,t:'Słuch: akord durowy czy molowy',kind:'chord',eq:'Jaki to akord?',items:C3,
+ intro:()=>`<p>Akord durowy brzmi jasno, pewnie i radośnie, a molowy ciemniej i smutniej. Różni je tylko tercja, więc słuchaj nastroju całego akordu, a nie pojedynczych dźwięków.</p><p>Akord zostanie zagrany jak szybkie przejechanie kostką po strunach. Możesz odsłuchać go dowolną liczbę razy.</p>`};
+const E3={id:'e3',ear:1,t:'Słuch: maj7 czy m7',kind:'chord',eq:'Jaki to czterodźwięk?',items:C4,
+ intro:()=>`<p>Akord <b>maj7</b> brzmi miękko, marzycielsko i „lśniąco”. Akord <b>m7</b> jest ciemniejszy, spokojniejszy i lekko melancholijny. Septyma wielka w maj7 daje ten jasny, zawieszony efekt, a septyma mała w m7 bardziej „bluesowy” smutek.</p>`};
+const E4={id:'e4',ear:1,t:'Słuch: skala durowa czy molowa',kind:'scale',eq:'Jaka to skala?',items:[['skala durowa',[0,2,4,5,7,9,11],'','T T P T T T P'],['skala molowa',[0,2,3,5,7,8,10],'','T P T T P T T']],
+ intro:()=>`<p>Skala durowa brzmi jasno i „odświętnie”, a molowa naturalna ciemniej, bardziej poważnie. Najłatwiej usłyszeć różnicę na trzecim stopniu: w durze jest wysoko i radośnie, w molu niżej i smutniej.</p><p>Skala zagra się od dźwięku, który losujemy, w górę, dźwięk po dźwięku.</p>`};
+const playT=t=>play(t.snd,t.arp?.035:.55);
+function autoSnd(){
+ if(L.view!=='task')return;const t=L.tasks[L.i];if(t.heard||t.done)return;
+ if(t.snd){t.heard=1;playT(t)}else if(t.h){t.heard=1;play(t.it[1].map(o=>48+t.root+o))}
+}
+const mkEar=l=>{
+ const T=[],pick=()=>l.items[Math.random()*l.items.length|0];
+ for(let i=0;i<6;i++){
+  const it=pick(),root=Math.random()*12|0,opts=sh([it].concat(sh(l.items.filter(x=>x!==it)).slice(0,3))).map(x=>x[0]),nmz=l.kind==='chord'?nm(root)+it[2]+' ('+it[0]+')':it[0]+' od '+nm(root);
+  T.push({k:'q',it,root,snd:it[1].map(o=>48+root+o),arp:l.kind==='chord',q:l.eq,lab:'Słuch: '+nmz,opts,ok:opts.indexOf(it[0]),why:'To był '+nmz+'.',sc:0,done:false});
+ }
+ if(l.pb)for(let i=0;i<2;i++)T.push({k:'p',h:1,it:pick(),root:Math.random()*12|0,pi:0,miss:0,sc:0,done:false,msg:'',c:''});
+ return sh(T);
+};
+const mk=l=>l.ear?mkEar(l):mk0(l);
+const HM1={id:'hm1',t:'Koło kwintowe i tonacje',kind:'quiz',items:[],
+ intro:()=>`<p>Tonacje durowe ułożone co kwintę w górę tworzą <b>koło kwintowe</b>: ${nm(0)}, ${nm(7)}, ${nm(2)}, ${nm(9)}, ${nm(4)}... Każda kolejna ma o jeden krzyżyk więcej: ${nm(0)}-dur nie ma żadnego, ${nm(7)}-dur ma jeden (F#), ${nm(2)}-dur ma dwa (F#, C#), ${nm(9)}-dur trzy (F#, C#, G#).</p><p>W drugą stronę, co kwintę w dół, przybywa bemoli: F-dur ma jeden (Bb), a Bb-dur dwa. Tonacje równoległe, np. ${nm(0)}-dur i ${nm(9)}-moll, mają te same znaki przykluczowe.</p>`,
+ qz:()=>[['Ile krzyżyków ma tonacja G-dur?',['0','1','2'],1,'G-dur ma jeden krzyżyk: F#.'],['Ile krzyżyków ma tonacja D-dur?',['1','2','3'],1,'D-dur ma dwa krzyżyki: F# i C#.'],['Ile bemoli ma tonacja F-dur?',['0','1','2'],1,'F-dur ma jeden bemol: Bb.'],['Co się dzieje ze znakami przy ruchu o kwintę w górę po kole kwintowym?',['przybywa jeden krzyżyk','przybywa jeden bemol','nic się nie zmienia'],0,'Każda tonacja o kwintę wyżej ma o jeden krzyżyk więcej.'],[`Ile krzyżyków ma tonacja ${nm(9)}-moll (równoległa do ${nm(0)}-dur)?`,['0','1','3'],0,`Równoległe tonacje mają te same znaki, więc ${nm(9)}-moll nie ma żadnych.`],['Który dźwięk leży kwintę czystą nad G?',['C','D','A'],1,'G plus 7 półtonów to D.'],['Jak nazywa się ułożenie tonacji co kwintę?',['koło kwintowe','gama chromatyczna','kadencja'],0,'To koło kwintowe.']]};
+const HM2={id:'hm2',t:'Akordy w tonacji molowej',kind:'quiz',items:[],
+ intro:()=>`<p>W molu naturalnym akordy na kolejnych stopniach to: <b>i moll, ii zmniejszony, III dur, iv moll, v moll, VI dur, VII dur</b>. W ${nm(9)}-moll: ${nm(9)}m, ${nm(11)}dim, ${nm(0)}, ${nm(2)}m, ${nm(4)}m, ${nm(5)}, ${nm(7)}.</p><p>Żeby dominanta brzmiała mocniej, często podwyższa się siódmy stopień (mol harmoniczny). Wtedy v zmienia się w <b>V dur</b>, np. ${nm(4)} lub ${nm(4)}7 w ${nm(9)}-moll, i wyraźnie prowadzi do ${nm(9)}m.</p>`,
+ qz:()=>[['Jakim akordem jest stopień i w tonacji molowej?',['durowym','molowym','zmniejszonym'],1,'i to akord molowy, czyli tonika.'],[`Jaki akord stoi na III stopniu w ${nm(9)}-moll?`,[nm(0),nm(0)+'m',nm(2)],0,`III to ${nm(0)}, akord durowy.`],[`Jaki akord stoi na VI stopniu w ${nm(9)}-moll?`,[nm(5),nm(5)+'m',nm(4)],0,`VI to ${nm(5)}.`],['Który stopień w molu naturalnym daje akord zmniejszony?',['ii','iv','VI'],0,'Zmniejszony jest akord na II stopniu.'],['Po co podwyższa się siódmy stopień w molu harmonicznym?',['żeby dominanta była durowa i silniej prowadziła do toniki','żeby skala była dłuższa','żeby zmienić tonację'],0,'Podwyższona septyma daje durową dominantę.'],[`Jaka jest dominanta w ${nm(9)}-moll harmonicznym?`,[nm(4)+' lub '+nm(4)+'7',nm(4)+'m',nm(7)],0,`V to ${nm(4)}, akord durowy.`]]};
+const HM3={id:'hm3',t:'Kadencje',kind:'quiz',items:[],
+ intro:()=>`<p><b>Kadencja</b> to zakończenie frazy harmonicznej, czyli sposób, w jaki akordy „zamykają” muzykę.</p><p><b>Pełna</b>: D–T (V–I), np. ${nm(7)} i ${nm(0)} w ${nm(0)}-dur. To najmocniejsze, ostateczne zakończenie. <b>Plagalna</b>: S–T (IV–I), np. ${nm(5)} i ${nm(0)}, łagodniejsza, jak „amen”. <b>Półkadencja</b> kończy się na dominancie (np. I–V) i brzmi jak zawieszone pytanie. <b>Zwodnicza</b>: D–vi (V–vi), np. ${nm(7)} i ${nm(9)}m. Słuchacz spodziewa się toniki, a dostaje jej zastępcę.</p>`,
+ qz:()=>[['Jaki obieg tworzy kadencję pełną?',['D–T','S–T','T–S'],0,'Kadencja pełna to D–T (V–I).'],['Który obieg to kadencja plagalna?',['IV–I','V–I','I–V'],0,'Plagalna to S–T, czyli IV–I.'],['Jak brzmi półkadencja?',['jak zawieszone pytanie','jak ostateczne zakończenie','jak zmiana tonacji'],0,'Kończy się na dominancie, więc brzmi otwarcie.'],['Na czym polega kadencja zwodnicza?',['po V zamiast I pojawia się vi','po IV pojawia się I','po I następuje V'],0,'D–vi: zamiast toniki pojawia się jej zastępca.'],[`Jaką kadencją jest ${nm(7)} i ${nm(0)} w ${nm(0)}-dur?`,['pełną','plagalną','zwodniczą'],0,'V–I to kadencja pełna.'],[`Jaką kadencją jest ${nm(5)} i ${nm(0)} w ${nm(0)}-dur?`,['plagalną','pełną','półkadencją'],0,'IV–I to kadencja plagalna.']]};
+const HM4={id:'hm4',t:'Dominanta septymowa (D7)',kind:'chord',items:[['dominantowy septymowy',[0,4,7,10],'7','1 3 5 b7']],
+ intro:()=>`<p><b>Akord dominantowy septymowy</b> (D7) to dur z dodaną septymą małą: 1 3 5 b7, np. ${nm(7)}7 to ${ex(7,[0,4,7,10])}. Stoi na V stopniu skali durowej.</p><p>Tercja i septyma tworzą razem <b>tryton</b>: w ${nm(7)}7 to ${nm(11)} i F. Ten niestabilny interwał „chce się rozwiązać” do ${nm(0)} i E, czyli do toniki. Dlatego D7 tak silnie prowadzi do I, a w bluesie gra się go na każdym stopniu.</p>`,
+ qz:()=>[['Jaki wzór ma akord dominantowy septymowy?',['1 3 5 b7','1 b3 5 b7','1 3 5 7'],0,'D7 to 1 3 5 b7.'],[`Jakie dźwięki tworzą akord ${nm(7)}7?`,[ex(7,[0,4,7,10]),ex(7,[0,4,7,11]),ex(7,[0,3,7,10])],0,`${nm(7)}7 to ${ex(7,[0,4,7,10])}.`],['Jaki interwał tworzą tercja i septyma w akordzie D7?',['tryton','kwinta czysta','tercja mała'],0,'Między tercją a septymą jest tryton.'],['Na którym stopniu skali durowej stoi D7?',['V','IV','II'],0,'Akord dominantowy stoi na V stopniu.'],['Do jakiego akordu zwykle rozwiązuje się D7?',['do toniki (I)','do subdominanty (IV)','do II'],0,'D7 rozwiązuje się do toniki.'],['Czym D7 różni się od maj7?',['septyma mała zamiast wielkiej','tercja mała zamiast wielkiej','brak kwinty'],0,'D7 ma septymę małą, a maj7 wielką.']]};
+const HM5={id:'hm5',t:'Progresje: I–V–vi–IV, ii–V–I, blues',kind:'quiz',items:[],
+ intro:()=>`<p>Najpopularniejsze obiegi w muzyce: <b>I–V–vi–IV</b> (w ${nm(0)}-dur: ${nm(0)}, ${nm(7)}, ${nm(9)}m, ${nm(5)}) to podstawa wielu piosenek pop. <b>ii–V–I</b> (${nm(2)}m7, ${nm(7)}7, ${nm(0)}maj7) to najważniejszy obieg w jazzie. <b>12-taktowy blues</b> opiera się na akordach I7, IV7 i V7.</p><p>Wszystkie te progresje możesz posłuchać i pograć do nich w zakładce Metronom i progresje.</p>`,
+ qz:()=>[[`Jakie akordy tworzą I–V–vi–IV w ${nm(0)}-dur?`,[`${nm(0)}, ${nm(7)}, ${nm(9)}m, ${nm(5)}`,`${nm(0)}, ${nm(5)}, ${nm(7)}, ${nm(9)}m`,`${nm(0)}, ${nm(9)}m, ${nm(5)}, ${nm(7)}`],0,`I to ${nm(0)}, V to ${nm(7)}, vi to ${nm(9)}m, IV to ${nm(5)}.`],[`Jakie akordy tworzą ii–V–I w ${nm(0)}-dur?`,[`${nm(2)}m7, ${nm(7)}7, ${nm(0)}maj7`,`${nm(0)}maj7, ${nm(7)}7, ${nm(2)}m7`,`${nm(2)}7, ${nm(7)}m7, ${nm(0)}`],0,`ii to ${nm(2)}m7, V to ${nm(7)}7, I to ${nm(0)}maj7.`],['Które trzy akordy tworzą podstawowy blues?',['I7, IV7, V7','I, ii, iii','vi, IV, I'],0,'Blues opiera się na I7, IV7 i V7.'],['W jakim stylu najczęściej występuje ii–V–I?',['jazz','metal','reggae'],0,'ii–V–I to fundament jazzu.'],['Który akord w obiegu I–V–vi–IV jest molowy?',['vi','V','IV'],0,'Molowy jest vi.'],['Ile taktów ma klasyczny blues?',['8','12','16'],1,'Klasyczny blues ma 12 taktów.']]};
+const LES=[N0,LES0[0],LES0[1],S1,S2,LES0[2],LES0[3],D1,H1,HM1,HM2,HM3,HM4,HM5,E1,E2,E3,E4];
+const EXTRA={
+ n0:()=>[['Ile półtonów ma ton?',['1','2','3'],1,'Ton to dwa półtony.'],['Który dźwięk leży o ton wyżej niż D?',['D#','E','F'],1,'D plus dwa półtony to E.'],['Który dźwięk jest o półton niżej niż C?',[nm(11),nm(10),nm(1)],0,`Półton w dół od C to ${nm(11)}.`],['Ile różnych dźwięków (z krzyżykami) mieści się w oktawie?',['7','12','14'],1,'W oktawie jest 12 różnych dźwięków.'],['O ile progów trzeba przesunąć palec, żeby zagrać dźwięk o oktawę wyższy?',['7','12','24'],1,'Oktawa to 12 progów.']],
+ i1:()=>[['Który interwał ma 2 półtony?',['sekunda mała','sekunda wielka','tercja mała'],1,'Sekunda wielka to 2 półtony.'],['Ile półtonów ma tercja mała?',['2','3','4'],1,'Tercja mała to 3 półtony.'],[`Jaki dźwięk leży tercję wielką nad ${nm(0)}?`,[nm(3),nm(4),nm(5)],1,`${nm(0)} plus 4 półtony to ${nm(4)}.`],[`Jaki dźwięk leży tercję małą nad ${nm(0)}?`,[nm(3),nm(4),nm(2)],0,`${nm(0)} plus 3 półtony to ${nm(3)}.`],['Interwał o 1 półton to…',['sekunda mała','sekunda wielka','tercja mała'],0,'Sekunda mała to 1 półton.']],
+ i2:()=>[['Ile półtonów ma kwarta czysta?',['4','5','6'],1,'Kwarta czysta to 5 półtonów.'],[`Jaki dźwięk leży kwintę czystą nad ${nm(0)}?`,[nm(5),nm(7),nm(8)],1,`${nm(0)} plus 7 półtonów to ${nm(7)}.`],['Który interwał ma 9 półtonów?',['seksta mała','seksta wielka','septyma mała'],1,'Seksta wielka to 9 półtonów.'],['Który interwał leży pomiędzy kwartą a kwintą?',['tryton','tercja wielka','seksta mała'],0,'Tryton (6 półtonów) leży między kwartą (5) a kwintą (7).'],['Ile półtonów ma septyma mała?',['9','10','11'],1,'Septyma mała to 10 półtonów.']],
+ s1:()=>[[`Jaki jest trzeci dźwięk skali ${nm(0)}-dur?`,[nm(3),nm(4),nm(5)],1,`Trzeci stopień to ${nm(4)}.`],['Między którymi stopniami skali durowej są półtony?',['III–IV i VII–VIII','I–II i IV–V','II–III i VI–VII'],0,'Półtony są między III i IV oraz VII i VIII stopniem.'],[`Jaki jest siódmy dźwięk skali ${nm(0)}-dur?`,[nm(10),nm(11),nm(9)],1,`Siódmy stopień to ${nm(11)}.`],['Z ilu półtonów składa się cała skala durowa do oktawy?',['10','12','14'],1,'Do oktawy to 12 półtonów.']],
+ s2:()=>[[`Jakie dźwięki tworzą skalę ${nm(9)}-moll naturalną?`,[ex(9,[0,2,3,5,7,8,10]),ex(9,[0,2,4,5,7,9,11]),ex(9,[0,1,3,5,6,8,10])],0,`Wzór T P T T P T T od ${nm(9)} daje ${ex(9,[0,2,3,5,7,8,10])}.`],['Jaki jest wzór skali molowej naturalnej?',['T P T T P T T','T T P T T T P','P T T P T T T'],0,'Ton, półton, ton, ton, półton, ton, ton.'],[`Jaka tonacja moll jest równoległa do ${nm(7)}-dur?`,[nm(4)+'-moll',nm(9)+'-moll',nm(2)+'-moll'],0,`Szósty stopień ${nm(7)}-dur to ${nm(4)}.`],['Jaki nastrój ma zwykle skala molowa?',['jasny i radosny','ciemniejszy i poważniejszy','żaden z nich'],1,'Moll brzmi ciemniej i poważniej niż dur.']],
+ t3:()=>[[`Jakie dźwięki tworzą akord ${nm(0)}m?`,[ex(0,[0,3,7]),ex(0,[0,4,7]),ex(0,[0,3,6])],0,`1 b3 5 to ${ex(0,[0,3,7])}.`],[`Jaki jest trzeci dźwięk akordu ${nm(7)}-dur?`,[nm(10),nm(11),nm(2)],1,`${nm(7)} plus 4 półtony to ${nm(11)}.`],['Ile półtonów jest między tercją a kwintą w akordzie durowym?',['3','4','5'],0,'Od tercji (4 półtony) do kwinty (7) jest 3 półtony.'],['Który akord brzmi smutniej?',['durowy','molowy'],1,'Smutniej brzmi akord molowy.']],
+ t4:()=>[[`Jakie dźwięki tworzą akord ${nm(0)}maj7?`,[ex(0,[0,4,7,11]),ex(0,[0,4,7,10]),ex(0,[0,3,7,10])],0,`1 3 5 7 to ${ex(0,[0,4,7,11])}.`],['Ile półtonów od prymy ma septyma mała?',['10','11','12'],0,'Septyma mała to 10 półtonów.'],['Czym m7 różni się od zwykłego akordu molowego?',['dodaną septymą małą','dodaną sekstą','obniżoną kwintą'],0,'m7 to moll z dodaną septymą małą.'],['Który z tych akordów ma tercję wielką?',['maj7','m7'],0,'maj7 jest durowy, ma więc tercję wielką.']],
+ d1:()=>[[`Jaki akord stoi na II stopniu w ${nm(0)}-dur?`,[nm(2)+'m',nm(2),nm(2)+'dim'],0,`ii to ${nm(2)}m.`],[`Jaki akord stoi na V stopniu w ${nm(0)}-dur?`,[nm(7),nm(7)+'m',nm(7)+'dim'],0,`V to ${nm(7)}, akord durowy.`],['Które stopnie dają akordy molowe w tonacji durowej?',['ii, iii, vi','I, IV, V','tylko vii'],0,'Molowe są ii, iii i vi.'],[`Jaki akord stoi na III stopniu w ${nm(0)}-dur?`,[nm(4)+'m',nm(4),nm(3)],0,`iii to ${nm(4)}m.`]],
+ h1:()=>[['Jaką funkcję pełni akord I?',['tonikę','subdominantę','dominantę'],0,'I to tonika.'],[`Jakie akordy tworzą obieg T–S–D w ${nm(0)}-dur?`,[`${nm(0)}, ${nm(5)}, ${nm(7)}`,`${nm(0)}, ${nm(7)}, ${nm(5)}`,`${nm(0)}, ${nm(9)}m, ${nm(2)}m`],0,`T to ${nm(0)}, S to ${nm(5)}, D to ${nm(7)}.`],['Który akord może zastąpić subdominantę?',['ii','iii','vii'],0,'ii bywa zastępcą subdominanty.'],['Jak zwykle rozwiązuje się dominanta?',['do toniki','do subdominanty','nigdzie'],0,'Dominanta rozwiązuje się do toniki (D–T).']]
+};
+LES.forEach(l=>{const o=l.qz,x=EXTRA[l.id];if(x)l.qz=()=>o().concat(x())});
+const L={grp:'th',view:'list',les:null,tasks:[],i:0,res:null};
+let prog={};try{prog=JSON.parse(localStorage.getItem('tg-les')||'{}')}catch(e){}
+const SV=()=>{try{localStorage.setItem('tg-les',JSON.stringify(prog))}catch(e){}};
+const tbl=l=>'<div class="tw"><table><tr><th>Nazwa</th><th>Półtony</th><th>Wzór</th><th>Od '+nm(0)+'</th></tr>'+l.items.map(it=>`<tr><td>${l.kind==='chord'?'<b>'+nm(0)+it[2]+'</b> '+it[0]:it[0]}</td><td>${l.kind==='int'?it[1][1]:it[1].join('–')}</td><td>${it[3]}</td><td>${ex(0,it[1])}</td></tr>`).join('')+'</table></div>';
+const mk0=l=>sh(sh(l.qz().map((q,qi)=>{const pm=sh(q[1].map((_,i)=>i));return{k:'q',qi,pm,q:q[0],opts:pm.map(i=>q[1][i]),ok:pm.indexOf(q[2]),why:q[3],sc:0,done:false}})).slice(0,5).concat(sh(l.items.concat(l.items)).slice(0,4).map(it=>({k:'p',it,root:Math.random()*12|0,pi:0,miss:0,sc:0,done:false,msg:'',c:''}))));
+const tl=(t,l)=>t.k==='q'?(t.lab||t.q):(l.kind==='int'?`${t.it[0]} od ${nm(t.root)}`:l.kind==='scale'?`skala ${nm(t.root)} ${t.it[0]}`:`akord ${nm(t.root)}${t.it[2]}`);
+const ta=t=>t.k==='q'?t.why:ex(t.root,t.it[1]);
+function fin(){
+ const T=L.tasks,id=L.les.id,p=prog[id]||{},pct=Math.round(T.reduce((a,t)=>a+t.sc,0)/T.length*100),pass=pct>=70;
+ L.res={pct,pass,was:!!p.done};prog[id]={done:!!p.done||pass,best:Math.max(p.best||0,pct)};SV();L.view='sum';
+}
+function rLz(){
+ const l=L.les;let h='';
+ if(L.view==='list'){
+  h=(L.grp==='ea'?'<h2>Kształcenie słuchu</h2>':'<h2>Lekcje teorii</h2>')+'<p class="mut">Każda lekcja to krótkie wyjaśnienie, zadania i ocena na końcu. Zaliczenie od 70%. Do ukończonych lekcji możesz wracać w każdej chwili.</p>'+LES.map((x,i)=>{if(!!x.ear!==(L.grp==='ea'))return '';const p=prog[x.id]||{};
+   return `<div class="les"><div><b>${LES.slice(0,i).filter(y=>!!y.ear===!!x.ear).length+1}. ${x.t}</b>${p.done?' <span class="tick">✓ ukończona</span>':''}<div class="mut">${p.best!=null?'Najlepszy wynik: '+p.best+'%':'Jeszcze nie rozpoczęta'}</div></div><button class="btn${p.done?'':' pri'}" data-a="open" data-i="${i}">${p.done?'Wróć do lekcji':p.best!=null?'Kontynuuj':'Rozpocznij'}</button></div>`}).join('');
+ }else if(L.view==='intro'){
+  h=`<button class="btn" data-a="list">← Lekcje</button><h2 style="margin-top:12px">${l.t}</h2>${l.intro()}${l.items.length?tbl(l):''}<div class="row"><button class="btn pri" data-a="start">Przejdź do zadań</button></div>`;
+ }else if(L.view==='task'){
+  const t=L.tasks[L.i],n=L.tasks.length;
+  h=`<div class="mut">Zadanie ${L.i+1} z ${n} · ${l.t}</div><div class="bar"><i style="width:${L.i/n*100}%"></i></div>`;
+  if(t.k==='q'){
+   h+=`<p class="q">${t.q}</p>${t.snd?'<div class="row"><button class="btn" data-a="snd">▶ Posłuchaj ponownie</button></div>':''}<div class="opts">${t.opts.map((o,k)=>`<button class="btn ${t.done?(k===t.ok?'good':k===t.pick?'wrong':''):''}" data-a="ans" data-k="${k}"${t.done?' disabled':''}>${o}</button>`).join('')}</div>`;
+   if(t.done)h+=`<p class="msg ${t.sc?'ok':'bad'}">${t.sc?'Dobrze!':'Niestety nie.'} ${t.why}</p>`;
+  }else{
+   const int=l.kind==='int',r=t.root;
+   h+=`<p class="q">${t.h?`Posłuchaj i zagraj interwał (zaczyna się od <b>${nm(r)}</b>)`:int?`Interwał: <b>${t.it[0]}</b> w górę od dźwięku <b>${nm(r)}</b>`:(l.kind==='scale'?`Skala <b>${nm(r)} ${t.it[0]}</b>`:`Akord <b>${nm(r)}${t.it[2]}</b> (${t.it[0]})`)}<br><small>Zagraj kolejno dźwięki${int?': najpierw '+nm(r)+', potem dźwięk docelowy':', od pierwszego do ostatniego'}</small></p><div class="chips">${t.it[1].map((o,k)=>`<span class="chip ${k<t.pi?'ok':''}">${k<t.pi||t.shown?nm(r+o):'?'}</span>`).join('')}</div><p class="msg ${t.c}">${t.shown?'Poprawna odpowiedź: '+ex(r,t.it[1]):t.msg}</p>`;
+  }
+  h+='<div class="row">'+(t.k==='p'?'<button class="btn" data-a="hear">Posłuchaj</button>'+(t.done?'':'<button class="btn" data-a="show">Pokaż odpowiedź</button>'):'')+(t.done?`<button class="btn pri" data-a="next">${L.i+1<n?'Dalej':'Zakończ i zobacz ocenę'}</button>`:'')+'<button class="btn" data-a="list">Wyjdź z lekcji</button></div>';
+ }else{
+  const T=L.tasks,R=L.res,g=grade(R.pct),good=T.filter(t=>t.sc===1),bad=T.filter(t=>t.sc<1);
+  h=`<h2>Wynik: ${l.t}</h2><div class="grade"><b>${g}</b><span>${GN[g]} · ${R.pct}%</span></div><p class="msg ${R.pass?'ok':'bad'}">${R.pass?'Lekcja zaliczona i oznaczona jako ukończona ✓':'Do zaliczenia potrzeba co najmniej 70%.'+(R.was?' Lekcja pozostaje oznaczona jako ukończona.':' Spróbuj jeszcze raz.')}</p><h3>Co poszło dobrze</h3>${good.length?'<ul>'+good.map(t=>`<li>${tl(t,l)}</li>`).join('')+'</ul>':'<p class="mut">Tym razem nic bez pomyłek. Powtórz lekcję.</p>'}<h3>Do poprawy</h3>${bad.length?'<ul>'+bad.map(t=>`<li>${tl(t,l)}<div class="mut">${t.sc===.5?'zagrane z pomyłkami; ':''}poprawnie: ${ta(t)}</div></li>`).join('')+'</ul>':'<p class="mut">Nic, wszystko bez błędów!</p>'}<div class="row"><button class="btn pri" data-a="start">Powtórz zadania</button><button class="btn" data-a="open" data-i="${LES.indexOf(l)}">Wróć do wyjaśnienia</button><button class="btn" data-a="list">Lista lekcji</button></div>`;
+ }
+ $('#lz').innerHTML=h;
+}
+$('#lz').onclick=e=>{
+ const b=e.target.closest('button');if(!b)return;const a=b.dataset.a,t=L.tasks[L.i];
+ if(a==='list')L.view='list';
+ else if(a==='open'){L.les=LES[+b.dataset.i];L.view='intro'}
+ else if(a==='start'){L.tasks=mk(L.les);L.i=0;L.view='task';fired=cand}
+ else if(a==='ans'){if(t.done)return;t.pick=+b.dataset.k;t.done=true;t.sc=t.pick===t.ok?1:0}
+ else if(a==='hear')play(t.it[1].map(o=>48+t.root+o));
+ else if(a==='show'){if(t.done)return;t.done=true;t.sc=0;t.shown=1}
+ else if(a==='next'){if(L.i+1<L.tasks.length){L.i++;fired=cand}else fin()}
+ else if(a==='snd')playT(t);
+ rLz();autoSnd();
+};
+function thIn(pc){
+ if(L.view!=='task')return;const t=L.tasks[L.i];if(t.k!=='p'||t.done)return;const o=t.it[1];
+ if(pc===(t.root+o[t.pi])%12){
+  t.pi++;t.c='ok';t.msg='Dobrze, gram dalej';
+  if(t.pi===o.length){t.done=true;t.sc=t.miss===0?1:t.miss<=2?.5:0;t.msg=t.miss===0?'Świetnie, bez pomyłek!':'Zaliczone, ale z pomyłkami: '+t.miss}
+ }else{t.miss++;t.c='bad';t.msg=`To było ${nm(pc)}, spróbuj ponownie`;if(pc===t.root)t.pi=1}
+ rLz();
+}
+
+/* ---------- metronom i progresje ---------- */
+let mode='ex',jt,jbus;
+const PRG=[
+ {n:'I–V–vi–IV (pop)',c:[[0,''],[7,''],[9,'m'],[5,'']],t:0,m:'dur'},
+ {n:'vi–IV–I–V (pop, nastrojowa)',c:[[0,'m'],[8,''],[3,''],[10,'']],t:3,m:'dur'},
+ {n:'I–vi–IV–V (lata 50.)',c:[[0,''],[9,'m'],[5,''],[7,'']],t:0,m:'dur'},
+ {n:'I–IV–V–IV (rock)',c:[[0,''],[5,''],[7,''],[5,'']],t:0,m:'dur'},
+ {n:'ii–V–I (jazz)',c:[[0,'m7'],[5,'7'],[10,'maj7'],[10,'maj7']],t:10,m:'dur'},
+ {n:'Blues 12-taktowy',c:[0,0,0,0,5,5,0,0,7,5,0,7].map(o=>[o,'7']),t:0,m:'moll'},
+ {n:'i–VII–VI–VII (rock moll)',c:[[0,'m'],[10,''],[8,''],[10,'']],t:0,m:'moll'},
+ {n:'Kadencja andaluzyjska i–VII–VI–V',c:[[0,'m'],[10,''],[8,''],[7,'']],t:0,m:'moll'}
+];
+['pop','pop','pop','rock','jazz','blues','rock','pop'].forEach((x,i)=>PRG[i].s=x);
+const jam={run:false,bpm:100,pi:0,root:0,bar:0,beat:0,next:0,m:'4/4'};
+const MT={'2/4':{n:4,b:2},'3/4':{n:6,b:2},'4/4':{n:8,b:2},'5/4':{n:10,b:2},'6/8':{n:6,b:3}},P68={pop:'D-dDdu',rock:'DdDDdD',jazz:'D--D-d',blues:'D-uD-u'};
+const patFor=()=>{const y=jP().s;return jam.m==='6/8'?P68[y]:STY[y].p.repeat(2).slice(0,MT[jam.m].n)};
+function jBeats(){$('#jb').innerHTML='<i></i>'.repeat(MT[jam.m].n/MT[jam.m].b)}
+const jP=()=>PRG[jam.pi],fq=m=>440*2**((m-69)/12);
+function click(t,acc){const c=ctx(),o=c.createOscillator(),g=c.createGain();o.frequency.value=acc?1600:1100;g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.05);o.connect(g).connect(c.destination);o.start(t);o.stop(t+.06)}
+const STY={
+ pop:{p:'D-du-udu',sw:.5,lp:5200,d:0,lv:1,len:1.6,v:'full',st:.012},
+ rock:{p:'DdDdDdDd',sw:.5,lp:3400,d:7,lv:.5,len:.55,v:'pow',st:.005},
+ jazz:{p:'D-d-D-du',sw:.66,lp:1800,d:0,lv:1.1,len:.6,v:'jazz',st:.016},
+ blues:{p:'D-duD-du',sw:.64,lp:3600,d:2.5,lv:.8,len:1.1,v:'full',st:.01}
+};
+const STN={pop:'czysta gitara akustyczna',rock:'przesterowana gitara (power chordy)',jazz:'ciepła, jazzowa gitara ze swingiem',blues:'gitara z lekkim przesterem i shuffle'};
+const ST=()=>STY[jP().s],kb={};
+let jfx,jfxs;
+function pluck2(m,t,v,len,dst){
+ const c=ctx(),sr=c.sampleRate,f=fq(m);let b=kb[m];
+ if(!b){
+  const N=Math.max(2,Math.round(sr/f-.5)),L=Math.floor(sr*2.2);b=c.createBuffer(1,L,sr);const d=b.getChannelData(0);
+  let p=0;for(let i=0;i<N;i++){p=.55*p+.45*(Math.random()*2-1);d[i]=p*2}
+  const k=f<200?.9988:.9965;for(let i=N;i<L;i++)d[i]=k*.5*(d[i-N]+d[i-N+1]);kb[m]=b;
+ }
+ const s=c.createBufferSource(),g=c.createGain();s.buffer=b;
+ g.gain.setValueAtTime(v,t);g.gain.setValueAtTime(v,t+len*.5);g.gain.exponentialRampToValueAtTime(.001,t+len*1.1);
+ s.connect(g).connect(dst);s.start(t);s.stop(t+len*1.1+.05);
+}
+function jFx(){
+ const c=ctx(),y=jP().s;if(jfx&&jfxs===y)return;jfxs=y;
+ const S=STY[y],inp=c.createGain(),lp=c.createBiquadFilter(),og=c.createGain();let n=inp;
+ if(S.d){const w=c.createWaveShaper(),N=1024,cv=new Float32Array(N);for(let i=0;i<N;i++)cv[i]=Math.tanh((i*2/N-1)*S.d);w.curve=cv;w.oversample='2x';n.connect(w);n=w}
+ lp.type='lowpass';lp.frequency.value=S.lp;og.gain.value=S.lv;n.connect(lp);lp.connect(og);og.connect(jbus);jfx=inp;
+}
+function voice(x,S){
+ const r=(jam.root+x[0])%12,b=40+((r-4+12)%12),q=x[1];
+ if(S.v==='pow')return[b,b+7,b+12];
+ if(S.v==='jazz')return q==='maj7'?[b,b+7,b+11,b+16]:q==='m7'?[b,b+7,b+10,b+15]:q==='7'?[b,b+10,b+16,b+19]:[b,b+7,b+12+(q==='m'?3:4)];
+ const o=q==='m'?[0,7,12,15,19,24]:q==='7'?[0,7,10,16,19,24]:q==='maj7'?[0,7,11,16]:q==='m7'?[0,7,10,15]:[0,7,12,16,19,24];
+ return o.map(i=>b+i);
+}
+function strum(x,s,t){
+ const S=ST(),ch=patFor()[s];if(!ch||ch==='-')return;
+ jFx();const spb=60/jam.bpm,n=voice(x,S),up=ch==='u',v=(ch==='D'?1:up?.5:.75)*(.9+Math.random()*.2),gap=S.st*(up?.7:1);
+ const ns=up?n.slice(-Math.min(4,n.length)).reverse():n;
+ ns.forEach((m,k)=>pluck2(m,t+(Math.random()-.5)*.008+k*gap,.5*v*(up?1:1-k*.04),S.len*spb*(up?.7:1),jfx));
+}
+function jShow(b,bt){
+ document.querySelectorAll('#jc .cc').forEach((e,i)=>e.classList.toggle('on',i===b));
+ document.querySelectorAll('#jb i').forEach((e,i)=>e.classList.toggle('on',i===bt));
+}
+function jSched(){
+ const c=ctx();
+ while(jam.next<c.currentTime+.3){
+  const P=jP(),b=jam.bar%P.c.length,bt=jam.beat,t=jam.next,M=MT[jam.m];
+  if($('#jmet').checked&&bt%M.b===0)click(t,bt===0);
+  if($('#jbk').checked)strum(P.c[b],bt,t);
+  if(bt%M.b===0)setTimeout(()=>{if(jam.run)jShow(b,bt/M.b)},Math.max(0,(t-c.currentTime)*1000));
+  jam.next+=(M.b===2?(bt&1?1-ST().sw:ST().sw):1/M.b)*60/jam.bpm;
+  if(++jam.beat===M.n){jam.beat=0;jam.bar=(b+1)%P.c.length}
+ }
+}
+async function jGo(){
+ if(jam.run){jam.run=false;clearInterval(jt);$('#jgo').textContent='▶ Start';jShow(jam.bar%jP().c.length,-1);return}
+ const c=ctx();if(c.state==='suspended')await c.resume();
+ if(!jbus){jbus=c.createGain();jbus.connect(c.destination)}
+ jbus.gain.value=$('#jvol').value/100*.5;
+ jam.run=true;jam.beat=0;jam.next=c.currentTime+.08;jt=setInterval(jSched,25);jSched();$('#jgo').textContent='■ Stop';
+}
+function setBpm(v){jam.bpm=Math.min(220,Math.max(40,Math.round(+v||100)));$('#bpm').value=jam.bpm;$('#bpmv').textContent=jam.bpm}
+function jFill(){
+ const P=jP();
+ $('#jrt').innerHTML=[...Array(12)].map((_,i)=>`<option value="${i}">${nm(i)}${P.c[0][1]}</option>`).join('');$('#jrt').value=jam.root;
+ $('#jc').innerHTML=P.c.map((x,i)=>`<button class="cc" data-b="${i}">${nm(jam.root+x[0])}${x[1]}</button>`).join('');
+ const t=nm(jam.root+P.t);
+ $('#jh').textContent='Do improwizacji: pentatonika '+(P.m==='dur'?`durowa ${t} lub molowa ${nm(jam.root+P.t+9)}`:`molowa ${t}`)+'. Brzmienie akompaniamentu: '+STN[P.s]+'.';
+ if(!jam.run)jShow(jam.bar%P.c.length,-1);
+}
+function jInit(){
+ $('#jpg').innerHTML=PRG.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('');
+ $('#jpg').onchange=e=>{jam.pi=+e.target.value;jam.bar=0;jFill()};
+ $('#jrt').onchange=e=>{jam.root=+e.target.value;jFill()};
+ $('#jc').onclick=e=>{const b=e.target.closest('button');if(!b)return;jam.bar=+b.dataset.b;jam.beat=0;jShow(jam.bar,jam.run?0:-1)};
+ $('#bm').onclick=()=>setBpm(jam.bpm-1);$('#bp').onclick=()=>setBpm(jam.bpm+1);$('#bpm').oninput=e=>setBpm(e.target.value);
+ let taps=[];$('#jtap').onclick=()=>{const n=performance.now();if(taps.length&&n-taps[taps.length-1]>2000)taps=[];taps.push(n);if(taps.length>6)taps.shift();if(taps.length>1)setBpm(60000/((taps[taps.length-1]-taps[0])/(taps.length-1)))};
+ $('#jm').onchange=e=>{jam.m=e.target.value;jam.beat=0;jBeats()};
+ $('#jgo').onclick=jGo;$('#jvol').oninput=e=>{if(jbus)jbus.gain.value=e.target.value/100*.5};
+ $('#top-tabs').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;mode=b.dataset.m;
+  document.querySelectorAll('#top-tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#m-ex').hidden=mode!=='ex';$('#m-jam').hidden=mode!=='jam';if(mode==='ex'&&jam.run)jGo();fired=cand;
+ };
+ setBpm(100);jBeats();jFill();
+}
+
+/* ---------- UI ---------- */
+$('#ex-tabs').onclick=e=>{
+ const b=e.target.closest('button');if(!b)return;tab=b.dataset.t;
+ document.querySelectorAll('#ex-tabs button').forEach(x=>x.classList.toggle('on',x===b));
+ $('#p-fb').hidden=tab!=='fb';$('#p-th').hidden=tab==='fb';if(tab!=='fb'){L.grp=tab;L.view='list';rLz()}fired=cand;
+};
+$('#pl').onchange=e=>{
+ pl=e.target.checked;$('#fbs').options[5].text='2 ('+(pl?'H':'B')+')';
+ if(L.les)L.tasks.forEach(t=>{if(t.k!=='q')return;if(t.qi!=null){const q=L.les.qz()[t.qi];t.q=q[0];t.opts=t.pm.map(i=>q[1][i]);t.why=q[3]}else if(t.it){const n=L.les.kind==='chord'?nm(t.root)+t.it[2]+' ('+t.it[0]+')':t.it[0]+' od '+nm(t.root);t.lab='Słuch: '+n;t.why='To był '+n+'.'}});
+ fbDraw();rLz();jFill();if(fb.done)fbReveal('ok');
+};
+$('#micbtn').onclick=startMic;
+function tunOff(){$('#tn').textContent='–';$('#tc').textContent='';$('#tc').className='tc';$('#tf').textContent='';$('#tneedle').style.left='50%'}
+function tunShow(){
+ const s=[...fh].sort((a,b)=>a-b),f=s[s.length>>1],p=69+12*Math.log2(f/ref),n=Math.round(p),c=Math.round((p-n)*100),tf=ref*2**((n-69)/12);
+ $('#tn').textContent=nm(n)+(Math.floor(n/12)-1);
+ $('#tc').textContent=(c>0?'+':c<0?'−':'')+Math.abs(c)+' ¢';$('#tc').className='tc'+(Math.abs(c)<=1?' ok':'');
+ $('#tf').textContent=f.toFixed(2)+' Hz · cel '+tf.toFixed(2)+' Hz';
+ $('#tneedle').style.left=(50+Math.max(-50,Math.min(50,(p-n)*100)))+'%';
+}
+function setRef(v){ref=Math.round(Math.min(480,Math.max(400,+v||440))*10)/10;$('#ra').value=ref;fh=[];tunOff()}
+$('#rm').onclick=()=>setRef(ref-1);$('#rp').onclick=()=>setRef(ref+1);$('#rz').onclick=()=>setRef(440);$('#ra').onchange=e=>setRef(e.target.value);
+$('#tunbtn').onclick=()=>{
+ const open=$('#tun').hidden;$('#tun').hidden=!open;$('#tunbtn').classList.toggle('on',open);$('#tunbtn').setAttribute('aria-expanded',String(open));
+ if(an)an.fftSize=open?8192:4096;else if(open)startMic();
+ fh=[];tunOff();fired=cand;
+};
+$('#gn').oninput=e=>{const v=+e.target.value;$('#gv').textContent=v+'%';if(gain)gain.gain.value=v/100};
+(function(){
+ const R=document.documentElement,btn=$('#thm'),mq=matchMedia('(prefers-color-scheme:dark)');
+ const dark=()=>R.dataset.theme?R.dataset.theme==='dark':mq.matches;
+ const paint=()=>{const d=dark();btn.textContent=d?'☀':'☾';btn.title=d?'Przełącz na tryb jasny':'Przełącz na tryb ciemny';btn.setAttribute('aria-label',btn.title)};
+ try{const t=localStorage.getItem('tg-theme');if(t)R.dataset.theme=t}catch(e){}
+ paint();
+ btn.onclick=()=>{const t=dark()?'light':'dark';R.dataset.theme=t;try{localStorage.setItem('tg-theme',t)}catch(e){}paint()};
+ mq.addEventListener('change',paint);
+})();
+fbNew();rLz();jInit();
+</script></body></html>
